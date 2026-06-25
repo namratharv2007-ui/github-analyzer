@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>GitHub Analyzer</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <h1>GitHub Analyzer</h1>
+
+    <form>
+        <input
+            type="text"
+            name="username"
+            placeholder="Enter GitHub Username">
+
+        <button type="submit">
+            Analyze
+        </button>
+    </form>
+
+    {% if profile %}
+
+    <div class="card">
+
+        <img src="{{ profile.avatar }}" class="avatar">
+
+        <h2>{{ profile.name }}</h2>
+
+        <div class="stats">
+
+            <div class="stat-box">
+                <h3>{{ profile.followers }}</h3>
+                <p>Followers</p>
+            </div>
+
+            <div class="stat-box">
+                <h3>{{ profile.repos }}</h3>
+                <p>Repos</p>
+            </div>
+
+        </div>
+
+        <p><strong>Bio:</strong> {{ profile.bio }}</p>
+
+        <p><strong>Top Language:</strong> {{ profile.top_language }}</p>
+
+        <p>
+            <strong>Most Starred Repo:</strong>
+            {{ profile.most_starred_name }}
+            (⭐ {{ profile.most_starred_stars }})
+        </p>
+
+        <a href="{{ profile.github_url }}" target="_blank">
+            View GitHub Profile
+        </a>
+
+    </div>
+
+    <div class="card">
+
+        <h2>AI Summary</h2>
+
+        <p>{{ summary }}</p>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Language Usage</h2>
+
+        {% for language, percent in language_percentages.items() %}
+            <p>{{ language }} - {{ percent }}%</p>
+        {% endfor %}
+
+        <canvas id="languageChart"></canvas>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Recent Repositories</h2>
+
+        <ul>
+            {% for repo in repos %}
+                <li>
+                    <a href="{{ repo.html_url }}" target="_blank">
+                        {{ repo.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+    {% endif %}
+</body>
+</html>
